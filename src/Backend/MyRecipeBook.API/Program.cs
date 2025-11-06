@@ -1,3 +1,4 @@
+using MyRecipeBook.API.Filters;
 using MyRecipeBook.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Informando que a API precisa utilizar o filtro de excecoes globalmente
+builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,6 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Adiciona o middleware de cultura na pipeline de execucao
 app.UseMiddleware<CultureMiddleware>();
 
 app.UseHttpsRedirection();

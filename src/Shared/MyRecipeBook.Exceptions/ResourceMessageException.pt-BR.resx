@@ -129,4 +129,7 @@
   <data name="PASSWORD_INVALID_LENGTH" xml:space="preserve">
     <value>Senha deve ter no mínimo 6 caracteres!</value>
   </data>
+  <data name="UNKNOW_EXCEPTION" xml:space="preserve">
+    <value>ERRO INTERNO DESCONHECIDO!</value>
+  </data>
 </root>

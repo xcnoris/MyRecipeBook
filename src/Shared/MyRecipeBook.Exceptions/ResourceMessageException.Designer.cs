@@ -95,5 +95,14 @@ namespace MyRecipeBook.Exceptions {
                 return ResourceManager.GetString("PASSWORD_INVALID_LENGTH", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a ERRO INTERNO DESCONHECIDO!.
+        /// </summary>
+        public static string UNKNOW_EXCEPTION {
+            get {
+                return ResourceManager.GetString("UNKNOW_EXCEPTION", resourceCulture);
+            }
+        }
     }
 }
