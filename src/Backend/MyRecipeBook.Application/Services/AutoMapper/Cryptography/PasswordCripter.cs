@@ -7,9 +7,10 @@ namespace MyRecipeBook.Application.Services.AutoMapper.Cryptography
     {
         public string Emcrypt(string password)
         {
-            var newPassword = password + "MyRecipeBook2025@";
+            var chaveAdicional = "MyRecipeBook2025@";
+            var newPassword = $"{password}{chaveAdicional}";
 
-            var bytes = Encoding.UTF8.GetBytes(password);
+            var bytes = Encoding.UTF8.GetBytes(newPassword);
             var hashBytes = SHA512.HashData(bytes);
             return ConvertToHexString(hashBytes);
         }
