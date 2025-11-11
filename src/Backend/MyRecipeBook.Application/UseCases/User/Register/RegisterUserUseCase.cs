@@ -2,14 +2,21 @@
 using MyRecipeBook.Application.Services.AutoMapper.Cryptography;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Exceptions.ExceptionsBase;
+using System.Runtime.CompilerServices;
 
 namespace MyRecipeBook.Application.UseCases.User.Register
 {
     public class RegisterUserUseCase
     {
-        public ResponsesRegisterUserJson Execute(RequestRegisterUserJson request)
+        private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
+        private readonly IUserReadOnlyRepository _userReadOnlyRepository;
+
+        public async Task<ResponsesRegisterUserJson> Execute(RequestRegisterUserJson request)
         {
+            
+
             var cryprograpy = new PasswordCripter();
             var autoMapper = new AutoMapper.MapperConfiguration(options =>
             {
@@ -27,6 +34,8 @@ namespace MyRecipeBook.Application.UseCases.User.Register
             user.Password = cryprograpy.Emcrypt(request.Password);
 
             //Salvar no banco de dados
+            await _userWriteOnlyRepository.Add(user);
+
 
             return new ResponsesRegisterUserJson
             {
