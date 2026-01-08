@@ -1,4 +1,5 @@
-﻿using MyRecipeBook.Application.Services.AutoMapper;
+﻿using AutoMapper;
+using MyRecipeBook.Application.Services.AutoMapper;
 using MyRecipeBook.Application.Services.AutoMapper.Cryptography;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
@@ -8,26 +9,34 @@ using System.Runtime.CompilerServices;
 
 namespace MyRecipeBook.Application.UseCases.User.Register
 {
-    public class RegisterUserUseCase
+    public class RegisterUserUseCase : IRegisterUserUseCase
     {
         private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
         private readonly IUserReadOnlyRepository _userReadOnlyRepository;
+        private readonly IMapper _mapper;
+
+        public RegisterUserUseCase(
+            IUserWriteOnlyRepository userWriteOnlyRepository,
+            IUserReadOnlyRepository userReadOnlyRepository,
+            IMapper mapper)
+        {
+            _userWriteOnlyRepository = userWriteOnlyRepository;
+            _userReadOnlyRepository = userReadOnlyRepository;
+            _mapper = mapper;
+        }
 
         public async Task<ResponsesRegisterUserJson> Execute(RequestRegisterUserJson request)
         {
             
 
             var cryprograpy = new PasswordCripter();
-            var autoMapper = new AutoMapper.MapperConfiguration(options =>
-            {
-                options.AddProfile(new AutoMapping());
-            }).CreateMapper();
+
 
 
 
             //mapear a request em uma entidade
             Validate(request);
-            var user = autoMapper.Map<Domain.Entities.User>(request);
+            var user = _mapper.Map<Domain.Entities.User>(request);
 
             // criptrografa da senha
 
