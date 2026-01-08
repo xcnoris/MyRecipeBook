@@ -14,43 +14,37 @@ namespace MyRecipeBook.Application.UseCases.User.Register
         private readonly IUserWriteOnlyRepository _userWriteOnlyRepository;
         private readonly IUserReadOnlyRepository _userReadOnlyRepository;
         private readonly IMapper _mapper;
+        private readonly PasswordCripter _passwordCripter;
 
         public RegisterUserUseCase(
             IUserWriteOnlyRepository userWriteOnlyRepository,
             IUserReadOnlyRepository userReadOnlyRepository,
+            PasswordCripter passwordCripter,
             IMapper mapper)
         {
             _userWriteOnlyRepository = userWriteOnlyRepository;
             _userReadOnlyRepository = userReadOnlyRepository;
+            _passwordCripter = passwordCripter;
             _mapper = mapper;
         }
 
         public async Task<ResponsesRegisterUserJson> Execute(RequestRegisterUserJson request)
         {
-            
-
-            var cryprograpy = new PasswordCripter();
-
-
-
-
             //mapear a request em uma entidade
             Validate(request);
             var user = _mapper.Map<Domain.Entities.User>(request);
 
             // criptrografa da senha
-
-            user.Password = cryprograpy.Emcrypt(request.Password);
+            user.Password = _passwordCripter.Emcrypt(request.Password);
 
             //Salvar no banco de dados
             await _userWriteOnlyRepository.Add(user);
-
 
             return new ResponsesRegisterUserJson
             {
                 Name = request.Name,
             };
-        }
+        }   
 
         private void Validate(RequestRegisterUserJson request)
         {
